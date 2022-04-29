@@ -1,6 +1,9 @@
 {
   "name": "boilerplate",
+  "description": "boilerplate for angular + nest + electron",
+  "main": "main.js",
   "version": "0.0.0",
+  "author": "Gabriel Nogueira",
   "scripts": {
     "ng": "./node_modules/.bin/ng",
     "dev": "concurrently -p=\"{name}\" -n=\"Angular,NestJS\" -c=\"green,blue\" \"npm run start:app:dev\" \"npm run start:api:dev\"",
@@ -17,11 +20,17 @@
     "test:api": "cd apps/api && jest",
     "test:api:watch": "cd apps/api && jest --watch",
     "test:api:cov": "cd apps/api && jest --coverage",
+    "start:desktop": "npm run build:desktop && electron dist/apps/desktop/main.js",
+    "build:desktop": "npm run build && tsc --project apps/desktop && cp package.json dist/apps/desktop/package.json && cp -R dist/apps/api dist/apps/desktop && cp -R dist/apps/app dist/apps/desktop",
     "start": "start:app",
     "prebuild": "rimraf dist",
-    "build": "build:app",
-    "watch": "watch:app",
-    "test": "test:app"
+    "build": "npm run build:app && npm run build:api",
+    "test": "test:app",
+    "prepack": "rimraf package",
+    "pack": "npm run build:desktop && npx electron-packager dist/apps/desktop --out=package --icon=apps/desktop/assets/icon.png",
+    "pack:mac": "npx electron-packager dist/apps/desktop --out=package --overwrite --platform=darwin --arch=x64 --icon=apps/desktop/assets/icon.icns --prune=true",
+    "pack:win": "npx electron-packager dist/apps/desktop --out=package --overwrite --asar=true --platform=win32 --arch=ia32 --icon=apps/desktop/assets/icon.ico --prune=true --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Boilerplate App\"",
+    "pack:linux": "npx electron-packager dist/apps/desktop --out=package --overwrite --asar=true --platform=linux --arch=x64 --icon=apps/desktop/assets/icon.png --prune=true"
   },
   "private": true,
   "dependencies": {
@@ -40,6 +49,7 @@
     "@nestjs/swagger": "^5.2.1",
     "@nrwl/nx": "^7.8.7",
     "concurrently": "^7.1.0",
+    "electron": "^18.2.0",
     "nestjs-redoc": "^2.2.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
@@ -77,5 +87,30 @@
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.10.1",
     "typescript": "^4.5.2"
+  },
+  "build": {
+    "build": {
+      "productName": "Boilerplate",
+      "artifactName": "boilerplate-${version}-${os}-${arch}.${ext}",
+      "icon": "apps/desktop/assets/icon.icns",
+      "appId": "com.test.boilerplate",
+      "copyright": "Copyright © 2022 ${author}",
+      "appImage": {
+        "systemIntegration": "doNotAsk"
+      },
+      "files": [
+        "dist/apps/**/*"
+      ],
+      "directories": {
+        "buildResources": "public"
+      },
+      "pkg": {
+        "license": "README.md",
+        "isRelocatable": false
+      }
+    },
+    "extraMetadata": {
+      "main": "main.js"
+    }
   }
 }
