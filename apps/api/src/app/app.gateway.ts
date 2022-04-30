@@ -4,14 +4,23 @@ import {
   WebSocketServer,
   WsResponse,
 } from '@nestjs/websockets';
+import { Logger } from '@nestjs/common';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Server } from 'ws';
 
 @WebSocketGateway(3000)
 export class AppGateway {
-  @WebSocketServer()
-  server: Server;
+  @WebSocketServer() server: Server;
+  private logger: Logger = new Logger('AppGateway');
+
+  handleDisconnect(client: any) {
+    this.logger.log(`Client disconnected: ${client.id}`);
+  }
+
+  handleConnection(client: any, ...args: any[]) {
+    this.logger.log(`Client connected: ${client.id}`);
+  }
 
   /**
    * Example body:
