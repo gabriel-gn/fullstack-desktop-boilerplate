@@ -14,7 +14,7 @@
     "test:app": "cd apps/app && ng test",
     "build:api": "cd apps/api && nest build",
     "start:api": "cd apps/api && nest start",
-    "start:api:dev": "cd apps/api && nest start --watch",
+    "start:api:dev": "cd apps/api && kill -9 $(sudo lsof -t -i:3333) && nest start --watch",
     "start:api:debug": "cd apps/api && nest start --debug --watch",
     "start:api:prod": "npm run build:api && node dist/api/main",
     "test:api": "cd apps/api && jest",
