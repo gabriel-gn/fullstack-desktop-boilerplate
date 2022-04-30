@@ -7,6 +7,7 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerDocumentOptions, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app/app.module";
+import { WsAdapter } from "@nestjs/platform-ws"
 import { RedocModule, RedocOptions } from "nestjs-redoc";
 
 async function bootstrap() {
@@ -51,6 +52,7 @@ async function bootstrap() {
   }
 
   const port = process.env.PORT || 3333;
+  app.useWebSocketAdapter(new WsAdapter(app));
   await app.listen(port);
   Logger.log(
       `🚀 Backend Api is running on: http://localhost:${port}`
