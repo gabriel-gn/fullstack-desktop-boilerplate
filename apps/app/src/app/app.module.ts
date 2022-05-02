@@ -1,9 +1,10 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
 import {RouterModule} from "@angular/router";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -11,14 +12,11 @@ import {RouterModule} from "@angular/router";
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot([], {
-      useHash: true,
-      relativeLinkResolution: 'legacy',
-      scrollPositionRestoration: 'enabled'
-    }),
+    BrowserAnimationsModule,
     AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
